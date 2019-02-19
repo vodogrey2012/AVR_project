@@ -1,11 +1,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
-#include "array.h"
+#include "/tmp/AVRtmp/array.h"
 
 
-#define SET PORTD |= (1<<1) ; PORTD&=~(1<<1)
-#define SIG1 PORTD |= (1<<2)
-#define SIG0 PORTD &=~(1<<2)
 #define READY2SET PORTB &=~(1<<0)
 #define SET_ALL PORTB |= (1<<0)
 
@@ -34,28 +31,13 @@ int shift = 0;
 for( i = 0 ; i < 120 ; i++)
 {
     READY2SET;
-
-    // set empty
-    for( j = 0 ; j < 4 ; j++)
+    for( j = 0 ; j < 23 ; j++)
     {
-        SIG0;
-        SET;
-    }
-
-    for( j = 0 ; j < 30 ; j++)
-    {
-        for( shift = 5 ; shift >= 0 ; shift--)
-        {
-            if( array[i][j] & (1<<shift) )
-                SIG1;
-            else
-                SIG0;
-            SET;
-        }
-    
+        SPDR=array[i][j];
+        while(!(SPSR & (1<<SPIF)));
     }
     SET_ALL;
-    _delay_ms(100);
+    WAIT;
 }
     
         
