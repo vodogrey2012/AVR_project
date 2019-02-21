@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/pgmspace.h>
 #include "/tmp/AVRtmp/array.h"
 
 
@@ -31,10 +32,10 @@ int shift = 0;
 for( i = 0 ; i < 120 ; i++)
 {
     READY2SET;
-    for( j = 0 ; j < 23 ; j++)
+    for( j = 22 ; j >= 0 ; j--)
     {
-        SPDR=array[i][j];
-        while(!(SPSR & (1<<SPIF)));
+        SPDR = pgm_read_byte( &array[i][j]);
+        while( !(SPSR & (1<<SPIF)));
     }
     SET_ALL;
     WAIT;
