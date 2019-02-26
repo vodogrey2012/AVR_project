@@ -73,6 +73,6 @@ os.system( obj2hex)
 os.system( hex2ucont)
 
 # remove tmp dir
-#os.system( "rm -r " + tmp_dir)
+os.system( "rm -r " + tmp_dir)
 
 
